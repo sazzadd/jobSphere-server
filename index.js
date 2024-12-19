@@ -35,6 +35,20 @@ async function run() {
       const result = await jobCollection.find().toArray();
       res.send(result);
     });
+    // gett all jobs posted by specific user
+    app.get("/jobs/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { "buyer.email": email };
+      const result = await jobCollection.find(query).toArray();
+      res.send(result);
+    });
+    // posted job delete
+    app.delete("/job/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await jobCollection.deleteOne(query);
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
